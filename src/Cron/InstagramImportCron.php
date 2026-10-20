@@ -167,14 +167,7 @@ class InstagramImportCron
             return true;
         }
 
-        // media_url is omitted by the API e.g. for videos containing copyrighted material
-        $mediaUrl = $media['media_url'] ?? null;
-
-        if (null !== $mediaUrl && false !== strpos($mediaUrl, 'jpg')) {
-            $imageUrl = $mediaUrl;
-        } else {
-            $imageUrl = $media['thumbnail_url'] ?? $media['children']['data'][0]['media_url'] ?? $mediaUrl;
-        }
+        $imageUrl = NewsImporter::getInstagramImageUrl($media);
 
         if (null === $imageUrl) {
             return false;
